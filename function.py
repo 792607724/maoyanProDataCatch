@@ -201,13 +201,15 @@ if __name__ == '__main__':
         data_list.append(function.catch_data())
         while True:
             try:
-                sleep(3)
+                next_day.invalidate()
                 if next_day.exists():
                     if function.get_current_date() == function.goal_date:
                         finished = True
                         break
                     next_day.click()
                     break
+                else:
+                    common.scroll_up_down(percent=-0.6)
             except Exception:
                 common.scroll_up_down(percent=-0.6)
 
