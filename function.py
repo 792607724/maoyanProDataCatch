@@ -28,6 +28,8 @@ class Function:
         self.package_path = "./apk/maoyanPro.apk"
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
+        self.date = "2021年10月27日"
+        self.goal_date = "2021年10月29日"
 
     def launch_maoyanPro(self):
         self.device.start_app(self.package_name)
@@ -52,15 +54,15 @@ class Function:
         except Exception as ex:
             print("No need do this, check your code exception\n {}".format(str(ex)))
 
-    def wait_to_goal_date(self, date="2018年4月21日"):
+    def wait_to_goal_date(self):
         try:
             self.poco("com.sankuai.moviepro:id/tv_date").wait().click()
-            print("Please choose your date by manually:\n{}".format(date))
+            print("Please choose your date by manually:\n{}".format(self.date))
             while True:
                 try:
                     choose_date = self.get_current_date()
                     print("Waiting…… now please scroll to find specific date……")
-                    if choose_date == date:
+                    if choose_date == self.date:
                         print("Date choose correct, start catch data")
                         return True
                     sleep(1)
@@ -71,32 +73,15 @@ class Function:
 
     def catch_data(self):
         try:
-            scroll_head = self.poco(text="片名").wait()
-            scroll_tail = self.poco(text="影视作品《免责说明》").wait()
-            next_day = self.poco(text="后一天").wait()
-            if scroll_head.exists():
-                while True:
-                    try:
-                        common.scroll_up_down(percent=0.6, duration=1)
-                        # To Do 待实现 滑动时截取数据临时保存下来
-                        self.save_data_when_scroll()
-                        if scroll_tail.exists():
-                            print("已到底部，当天数据获取完毕")
-                            break
-                    except Exception:
-                        continue
-                while True:
-                    try:
-                        common.scroll_up_down(percent=-0.6, duration=1)
-                        if next_day.exists():
-                            print("已到头部，当天数据可提交并进行下一天数据获取")
-                            return True
-                    except Exception:
-                        continue
+            current_day_data = self.save_data_when_scroll()
+            return current_day_data
         except Exception as ex:
             print("No need do this, check your code exception\n {}".format(str(ex)))
 
     def save_data_when_scroll(self):
+        global data_temp, data_temp_item
+        data_temp = []
+        data_temp_item = []
         """
         先判断是否存在"影视作品《免责说明》"：
             存在：不需要滚动，直接获取数据
@@ -112,15 +97,83 @@ class Function:
                 每次滚动获取完数据都判断一次"影视作品《免责说明》"是否存在：
                     存在：则完成这一天获取
                     不存在：继续滚动获取
+        该函数用于判断截取数据并返回给catch_data函数
         """
-        try:
-            scroll_head = self.poco(text="片名").wait()
-            scroll_tail = self.poco(text="影视作品《免责说明》").wait()
-            ll_root = self.poco("com.sankuai.moviepro:id/ll_root").wait()
-            root_recycle = self.poco("com.sankuai.moviepro:id/root_recycle").wait()
-            pass
-        except Exception as ex:
-            print("No need do this, check your code exception\n {}".format(str(ex)))
+        scroll_head = self.poco(text="片名").wait()
+        scroll_tail = self.poco(text="影视作品《免责说明》").wait()
+        ll_root = self.poco("com.sankuai.moviepro:id/ll_root").wait()
+        root_recycle = self.poco("com.sankuai.moviepro:id/root_recycle").wait()
+        next_day = self.poco(text="后一天").wait()
+
+        if scroll_head.exists():
+            try:
+                while not scroll_tail.exists():
+                    # situation 1
+                    if scroll_head.exists() and ll_root.exists():
+                        # 获取数据
+                        self.get_data_situation_1()
+                        common.scroll_up_down(percent=0.6, duration=1)
+                    # situation 2
+                    elif (not scroll_head.exists()) and ll_root.exists():
+                        # 获取数据
+                        self.get_data_situation_2()
+                        common.scroll_up_down(percent=0.6, duration=1)
+                # situation 2
+                if scroll_tail.exists():
+                    # 获取数据
+                    self.get_data_situation_1()
+                    print("已到底部，当天数据获取完毕")
+            except Exception as ex:
+                print("No need do this, check your code exception\n {}".format(str(ex)))
+        return data_temp
+
+    # situation 1
+    def get_data_situation_1(self):
+        root_recycle = self.poco("com.sankuai.moviepro:id/root_recycle")
+        children_number = len(root_recycle.children())
+        print(children_number)
+        for i in range(2, children_number):
+            try:
+                tv_name = root_recycle.children()[i].children().children().children().child(
+                    "com.sankuai.moviepro:id/tv_name").get_text()
+                tv_rate = root_recycle.children()[i].children().child("com.sankuai.moviepro:id/tv_rate").get_text()
+                tv_count = root_recycle.children()[i].children().child("com.sankuai.moviepro:id/tv_count").get_text()
+                print("{} - {} - {}".format(tv_name, tv_rate, tv_count))
+                if tv_name not in data_temp_item:
+                    data_temp_item.append(tv_name)
+                    data_temp_item.append(tv_rate)
+                    data_temp_item.append(tv_count)
+                if tv_name == "其它":
+                    print("数据获取完成")
+                    return
+            except Exception as ex:
+                print("Maybe need check this error:\n{}".format(str(ex)))
+                continue
+        data_temp.append(data_temp_item)
+
+    # situation 2
+    def get_data_situation_2(self):
+        root_recycle = self.poco("com.sankuai.moviepro:id/root_recycle")
+        children_number = len(root_recycle.children())
+        print(children_number)
+        for i in range(0, children_number):
+            try:
+                tv_name = root_recycle.children()[i].children().children().children().child(
+                    "com.sankuai.moviepro:id/tv_name").get_text()
+                tv_rate = root_recycle.children()[i].children().child("com.sankuai.moviepro:id/tv_rate").get_text()
+                tv_count = root_recycle.children()[i].children().child("com.sankuai.moviepro:id/tv_count").get_text()
+                print("{} - {} - {}".format(tv_name, tv_rate, tv_count))
+                if tv_name not in data_temp_item:
+                    data_temp_item.append(tv_name)
+                    data_temp_item.append(tv_rate)
+                    data_temp_item.append(tv_count)
+                if tv_name == "其它":
+                    print("数据获取完成")
+                    return
+            except Exception as ex:
+                print("Maybe need check this error:\n{}".format(str(ex)))
+                continue
+        data_temp.append(data_temp_item)
 
 
 if __name__ == '__main__':
@@ -135,11 +188,27 @@ if __name__ == '__main__':
     # common.install_apk(function.package_path)
     # common.grantPermission(function.package_name)
 
-    function.launch_maoyanPro()
+    # function.launch_maoyanPro()
     # function.skip_guide()
-    function.enter_function()
-    # function.get_current_date()
+    # function.enter_function()
+    data_list = []
+    next_day = poco(text="后一天").wait()
     # if function.wait_to_goal_date():
     #     print("Begin")
-    #     function.catch_data()
-    function.catch_data()
+    finished = False
+    while not finished:
+        # 获取当前页面(当天)数据
+        data_list.append(function.catch_data())
+        while True:
+            try:
+                sleep(3)
+                if next_day.exists():
+                    if function.get_current_date() == function.goal_date:
+                        finished = True
+                        break
+                    next_day.click()
+                    break
+            except Exception:
+                common.scroll_up_down(percent=-0.6)
+
+    print(data_list)
