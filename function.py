@@ -73,14 +73,52 @@ class Function:
         try:
             scroll_head = self.poco(text="片名").wait()
             scroll_tail = self.poco(text="影视作品《免责说明》").wait()
+            next_day = self.poco(text="后一天").wait()
             if scroll_head.exists():
                 while True:
                     try:
                         common.scroll_up_down(percent=0.6, duration=1)
+                        # To Do 待实现 滑动时截取数据临时保存下来
+                        self.save_data_when_scroll()
                         if scroll_tail.exists():
                             print("已到底部，当天数据获取完毕")
+                            break
                     except Exception:
                         continue
+                while True:
+                    try:
+                        common.scroll_up_down(percent=-0.6, duration=1)
+                        if next_day.exists():
+                            print("已到头部，当天数据可提交并进行下一天数据获取")
+                            return True
+                    except Exception:
+                        continue
+        except Exception as ex:
+            print("No need do this, check your code exception\n {}".format(str(ex)))
+
+    def save_data_when_scroll(self):
+        """
+        先判断是否存在"影视作品《免责说明》"：
+            存在：不需要滚动，直接获取数据
+            不存在：
+                1、如果scroll_head = self.poco(text="片名").wait()且ll_root = self.poco("com.sankuai.moviepro:id/ll_root").wait()存在：
+                    获取root_recycle = self.poco("com.sankuai.moviepro:id/root_recycle").wait()有多少个children
+                    从第三个到最后一个开始获取当前界面的所有children，
+                        获取片名 - 场次占比 - 场次，拼接数据
+                2、如果scroll_head = self.poco(text="片名").wait()不存在且ll_root = self.poco("com.sankuai.moviepro:id/ll_root").wait()存在：
+                    获取root_recycle = self.poco("com.sankuai.moviepro:id/root_recycle").wait()有多少个children
+                    从第二个到最后一个开始获取当前界面的所有children，
+                        获取片名 - 场次占比 - 场次，拼接数据
+                每次滚动获取完数据都判断一次"影视作品《免责说明》"是否存在：
+                    存在：则完成这一天获取
+                    不存在：继续滚动获取
+        """
+        try:
+            scroll_head = self.poco(text="片名").wait()
+            scroll_tail = self.poco(text="影视作品《免责说明》").wait()
+            ll_root = self.poco("com.sankuai.moviepro:id/ll_root").wait()
+            root_recycle = self.poco("com.sankuai.moviepro:id/root_recycle").wait()
+            pass
         except Exception as ex:
             print("No need do this, check your code exception\n {}".format(str(ex)))
 
