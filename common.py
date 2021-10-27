@@ -1,6 +1,7 @@
 # coding = utf8
 import os
 import re
+from time import sleep
 
 from airtest.core.error import AdbShellError
 
@@ -35,3 +36,7 @@ class Common:
         except AdbShellError:
             print("No need granted for this permission!")
 
+    def scroll_up_down(self, percent=0.6, duration=1):
+        print("Beign scroll……")
+        self.poco.scroll(direction="vertical", percent=percent, duration=duration)
+        sleep(1)

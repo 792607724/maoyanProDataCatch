@@ -69,6 +69,21 @@ class Function:
         except Exception as ex:
             print("No need do this, check your code exception\n {}".format(str(ex)))
 
+    def catch_data(self):
+        try:
+            scroll_head = self.poco(text="片名").wait()
+            scroll_tail = self.poco(text="影视作品《免责说明》").wait()
+            if scroll_head.exists():
+                while True:
+                    try:
+                        common.scroll_up_down(percent=0.6, duration=1)
+                        if scroll_tail.exists():
+                            print("已到底部，当天数据获取完毕")
+                    except Exception:
+                        continue
+        except Exception as ex:
+            print("No need do this, check your code exception\n {}".format(str(ex)))
+
 
 if __name__ == '__main__':
     print("Running test……")
@@ -85,6 +100,8 @@ if __name__ == '__main__':
     function.launch_maoyanPro()
     # function.skip_guide()
     function.enter_function()
-    function.get_current_date()
-    if function.wait_to_goal_date():
-        print("Begin")
+    # function.get_current_date()
+    # if function.wait_to_goal_date():
+    #     print("Begin")
+    #     function.catch_data()
+    function.catch_data()
