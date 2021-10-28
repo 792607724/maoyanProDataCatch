@@ -201,7 +201,7 @@ class Function:
 
     # 测一天写一天
     def generateDataToExcel(self, data):
-        filename = "{}MovieDataFrom{}To{}.xlsx".format(cur_time, self.date, self.goal_date)
+        filename = "MovieDataFrom{}To{}.xlsx".format(self.date, self.goal_date)
         print("Begin generate excel data:\n{}".format(filename))
         common.write_into_excel(data=data, filename=filename)
 
