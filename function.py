@@ -29,7 +29,7 @@ class Function:
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
         self.date = "2021年10月28日"
-        self.goal_date = "2021年10月28日"
+        self.goal_date = "2021年10月29日"
 
     def launch_maoyanPro(self):
         self.device.start_app(self.package_name)
@@ -176,7 +176,6 @@ class Function:
         data_temp.append(data_temp_item)
 
     def catchDataProcess(self):
-        # data_list = []
         next_day = poco(text="后一天").wait()
         if function.wait_to_goal_date():
             print("Begin")
@@ -186,8 +185,8 @@ class Function:
             common.create_excel(filename)
             while not finished:
                 # 获取当前页面(当天)数据
-                # data_list.append(function.catch_data())
-                self.generateDataToExcel(function.catch_data(), filename)
+                current_page_date = self.get_current_date()
+                self.generateDataToExcel(current_page_date, function.catch_data(), filename)
                 while True:
                     try:
                         next_day.invalidate()
@@ -203,9 +202,9 @@ class Function:
                         common.scroll_up_down(percent=-0.6)
 
     # 测一天写一天
-    def generateDataToExcel(self, data, filename):
+    def generateDataToExcel(self, current_page_date, data, filename):
         print("Begin generate excel data:\n{}".format(filename))
-        common.write_into_excel(data=data, filename=filename)
+        common.write_into_excel(current_page_date, data=data, filename=filename)
 
 
 if __name__ == '__main__':
@@ -223,7 +222,7 @@ if __name__ == '__main__':
     # function.launch_maoyanPro()
     # function.skip_guide()
     # function.enter_function()
-    # function.catchDataProcess()
-    filename = "./result/MovieDataFrom{}To{}.xlsx".format(function.date, function.goal_date)
-    common.create_excel(filename)
-    common.write_into_excel("OK", filename)
+    function.catchDataProcess()
+    # filename = "./result/MovieDataFrom{}To{}.xlsx".format(function.date, function.goal_date)
+    # common.create_excel(filename)
+    # common.write_into_excel("OK", filename)

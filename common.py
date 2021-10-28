@@ -56,9 +56,22 @@ class Common:
         df.to_excel(file_path, index=False)
         print("{}文件创建成功".format(filename))
 
-    def write_into_excel(self, data, filename):
+    def write_into_excel(self, current_page_date, data, filename):
         df = pd.read_excel(filename, header=None, engine="openpyxl")
-        ds = pd.DataFrame([["1", "2", "3", "4"]])
+        b = data[0]
+        # 按这个格式处理数据并传入，每天的都追加进去
+        n = 0
+        temp_list = []
+        while n < len(b):
+            list_temp = []
+            print(len(b))
+            list_temp.append(current_page_date)
+            for n in range(n, n + 3):
+                list_temp.append(b[n])
+            n += 1
+            temp_list.append(list_temp)
+        print(temp_list)
+        ds = pd.DataFrame(temp_list)
         df = df.append(ds, ignore_index=True)
         df.to_excel(filename, index=False, header=False)
         print(str(data) + "\n")
