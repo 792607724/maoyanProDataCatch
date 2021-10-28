@@ -28,7 +28,7 @@ class Function:
         self.package_path = "./apk/maoyanPro.apk"
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
-        self.date = "2021年10月27日"
+        self.date = "2021年10月28日"
         self.goal_date = "2021年10月29日"
 
     def launch_maoyanPro(self):
@@ -175,6 +175,36 @@ class Function:
                 continue
         data_temp.append(data_temp_item)
 
+    def catchDataProcess(self):
+        # data_list = []
+        next_day = poco(text="后一天").wait()
+        if function.wait_to_goal_date():
+            print("Begin")
+            finished = False
+            while not finished:
+                # 获取当前页面(当天)数据
+                # data_list.append(function.catch_data())
+                self.generateDataToExcel(function.catch_data())
+                while True:
+                    try:
+                        next_day.invalidate()
+                        if next_day.exists():
+                            if function.get_current_date() == function.goal_date:
+                                finished = True
+                                break
+                            next_day.click()
+                            break
+                        else:
+                            common.scroll_up_down(percent=-0.6)
+                    except Exception:
+                        common.scroll_up_down(percent=-0.6)
+
+    # 测一天写一天
+    def generateDataToExcel(self, data):
+        filename = "{}MovieDataFrom{}To{}.xlsx".format(cur_time, self.date, self.goal_date)
+        print("Begin generate excel data:\n{}".format(filename))
+        common.write_into_excel(data=data, filename=filename)
+
 
 if __name__ == '__main__':
     print("Running test……")
@@ -185,32 +215,10 @@ if __name__ == '__main__':
     function = Function(device, poco)
 
     common = Common(device, poco)
-    # common.install_apk(function.package_path)
-    # common.grantPermission(function.package_name)
+    common.install_apk(function.package_path)
+    common.grantPermission(function.package_name)
 
-    # function.launch_maoyanPro()
-    # function.skip_guide()
-    # function.enter_function()
-    data_list = []
-    next_day = poco(text="后一天").wait()
-    # if function.wait_to_goal_date():
-    #     print("Begin")
-    finished = False
-    while not finished:
-        # 获取当前页面(当天)数据
-        data_list.append(function.catch_data())
-        while True:
-            try:
-                next_day.invalidate()
-                if next_day.exists():
-                    if function.get_current_date() == function.goal_date:
-                        finished = True
-                        break
-                    next_day.click()
-                    break
-                else:
-                    common.scroll_up_down(percent=-0.6)
-            except Exception:
-                common.scroll_up_down(percent=-0.6)
-
-    print(data_list)
+    function.launch_maoyanPro()
+    function.skip_guide()
+    function.enter_function()
+    function.catchDataProcess()
