@@ -4,8 +4,8 @@ import re
 import time
 from time import sleep
 
+import pandas as pd
 from airtest.core.error import AdbShellError
-from pandas import DataFrame
 
 os.path.abspath(".")
 cur_time = time.strftime("%Y%m%d_%H%M%S")
@@ -48,6 +48,17 @@ class Common:
         self.poco.scroll(direction="vertical", percent=percent, duration=duration)
         sleep(1)
 
+    def create_excel(self, filename):
+        if not os.path.exists("./result"):
+            os.system("mkdir ./result")
+        file_path = "{}".format(filename)
+        df = pd.DataFrame(columns=["日期", "电影名称", "场次占比", "场次"])
+        df.to_excel(file_path, index=False)
+        print("{}文件创建成功".format(filename))
+
     def write_into_excel(self, data, filename):
-        DataFrame.to_excel(excel_writer=filename, sheet_name="猫眼ProApp电影排片上座数据表")
+        df = pd.read_excel(filename, header=None, engine="openpyxl")
+        ds = pd.DataFrame([["1", "2", "3", "4"]])
+        df = df.append(ds, ignore_index=True)
+        df.to_excel(filename, index=False, header=False)
         print(str(data) + "\n")
