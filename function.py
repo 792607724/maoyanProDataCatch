@@ -181,10 +181,13 @@ class Function:
         if function.wait_to_goal_date():
             print("Begin")
             finished = False
+            # 先创建excel表格
+            filename = "./result/MovieDataFrom{}To{}.xlsx".format(self.date, self.goal_date)
+            common.create_excel(filename)
             while not finished:
                 # 获取当前页面(当天)数据
                 # data_list.append(function.catch_data())
-                self.generateDataToExcel(function.catch_data())
+                self.generateDataToExcel(function.catch_data(), filename)
                 while True:
                     try:
                         next_day.invalidate()
@@ -200,8 +203,7 @@ class Function:
                         common.scroll_up_down(percent=-0.6)
 
     # 测一天写一天
-    def generateDataToExcel(self, data):
-        filename = "./result/MovieDataFrom{}To{}.xlsx".format(self.date, self.goal_date)
+    def generateDataToExcel(self, data, filename):
         print("Begin generate excel data:\n{}".format(filename))
         common.write_into_excel(data=data, filename=filename)
 
@@ -215,10 +217,13 @@ if __name__ == '__main__':
     function = Function(device, poco)
 
     common = Common(device, poco)
-    common.install_apk(function.package_path)
-    common.grantPermission(function.package_name)
-
-    function.launch_maoyanPro()
-    function.skip_guide()
-    function.enter_function()
-    function.catchDataProcess()
+    # common.install_apk(function.package_path)
+    # common.grantPermission(function.package_name)
+    #
+    # function.launch_maoyanPro()
+    # function.skip_guide()
+    # function.enter_function()
+    # function.catchDataProcess()
+    filename = "./result/MovieDataFrom{}To{}.xlsx".format(function.date, function.goal_date)
+    common.create_excel(filename)
+    common.write_into_excel("OK", filename)
