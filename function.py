@@ -29,7 +29,7 @@ class Function:
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
         self.date = "2021年10月28日"
-        self.goal_date = "2021年10月29日"
+        self.goal_date = "2021年10月28日"
 
     def launch_maoyanPro(self):
         self.device.start_app(self.package_name)
@@ -201,7 +201,7 @@ class Function:
 
     # 测一天写一天
     def generateDataToExcel(self, data):
-        filename = "MovieDataFrom{}To{}.xlsx".format(self.date, self.goal_date)
+        filename = "./result/MovieDataFrom{}To{}.xlsx".format(self.date, self.goal_date)
         print("Begin generate excel data:\n{}".format(filename))
         common.write_into_excel(data=data, filename=filename)
 

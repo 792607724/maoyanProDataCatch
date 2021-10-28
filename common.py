@@ -5,6 +5,7 @@ import time
 from time import sleep
 
 from airtest.core.error import AdbShellError
+from pandas import DataFrame
 
 os.path.abspath(".")
 cur_time = time.strftime("%Y%m%d_%H%M%S")
@@ -48,6 +49,5 @@ class Common:
         sleep(1)
 
     def write_into_excel(self, data, filename):
-        # with open(file=, mode="a") as excel:
-        #     pass
+        DataFrame.to_excel(excel_writer=filename, sheet_name="猫眼ProApp电影排片上座数据表")
         print(str(data) + "\n")
