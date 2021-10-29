@@ -52,10 +52,10 @@ class Common:
         if not os.path.exists("./result"):
             os.mkdir("./result")
             print("Create folder success")
-        # file_path = "{}".format(filename)
-        # df = pd.DataFrame(columns=["日期", "电影名称", "场次占比", "场次"])
-        # df.to_excel(file_path, index=False)
-        # print("{} file create success!".format(filename))
+        file_path = "{}".format(filename)
+        df = pd.DataFrame(columns=["日期", "电影名称", "场次占比", "场次"])
+        df.to_excel(file_path, index=False)
+        print("{} file create success!".format(filename))
 
     def write_into_excel(self, current_page_date, data, filename):
         df = pd.read_excel(filename, header=None, engine="openpyxl")
