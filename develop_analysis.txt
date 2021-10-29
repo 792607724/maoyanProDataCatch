@@ -19,8 +19,7 @@
 1、apk存放模块：apk folder
 2、业务逻辑模块：function.py
 3、公共操作模块：common.py
-4、数据处理模块：data.py
-5、结构存放模块：result folder
+4、结构存放模块：result folder
 
 四、维护点：
 # Note
