@@ -20,23 +20,42 @@ cur_time = time.strftime("%Y%m%d_%H%M%S")
 class Common:
 
     def __init__(self, device, poco):
+        """
+        Common init function
+        :param device:deliver a device reference into init method
+        :param poco:deliver a poco reference into init method
+        """
         self.device = device
         self.poco = poco
 
     def install_apk(self, package_path="./apk/maoyanPro.apk"):
+        """
+        install maoyanPro apk
+        :param package_path:deliver the apk's saving path
+        :return: no return
+        """
         print("begin install app:{}".format(package_path))
         self.device.install_app(filepath=package_path, replace=True)
 
     def grantPermission(self, package_name="com.sankuai.moviepro"):
+        """
+        grant app permission
+        :param package_name:deliver a package name which you want grant all permission
+        :return: no return
+        """
+        # run twice for make sure when the app installed first will not be complete granted
         for i in range(2):
             try:
+                # first:dump current package's permission which is not granted
                 permission_list = self.device.shell(
                     "dumpsys package {} | grep permission | grep granted=false".format(package_name))
                 sleep(3)
+                # deal with the permission_list and filter all permission append to a list
                 permission_list = re.findall("\s*(.*):\sgranted", permission_list)
                 print("current app:{} has permission:[{}]".format(package_name, permission_list))
                 if permission_list:
                     for permission in permission_list:
+                        # grant each permission
                         self.device.shell("pm grant {} {}".format(package_name, permission))
                         print("Now, grant app {} - permission {}".format(package_name, permission))
             except AdbShellError as ex:
