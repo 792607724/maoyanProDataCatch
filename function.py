@@ -28,8 +28,8 @@ class Function:
         self.package_path = "./apk/maoyanPro.apk"
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
-        self.date = "2020年12月1日"
-        self.goal_date = "2021年12月2日"
+        self.date = "2021年10月30日"
+        self.goal_date = "2021年10月31日"
 
     def launch_maoyanPro(self):
         self.device.start_app(self.package_name)

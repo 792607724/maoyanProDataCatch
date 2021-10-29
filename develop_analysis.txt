@@ -23,5 +23,16 @@
 5、结构存放模块：result folder
 
 四、维护点：
+# Note
+# 如果adb没有权限，添加下权限
+# cd {your_python_path}/site-packages/airtest/core/android/static/adb/mac
+# chmod +x adb
+
+# 如果出现signature报错
+# 卸载掉设备现有的Pocoservice和Yostime，版本冲突导致的
+
+#windows系统，M2Crypto报错，就按照M2CryptoWin64
+
+# 如果出现children计数异常，重启设备再进行测试，否则容易导致测试时间很长
 
 
