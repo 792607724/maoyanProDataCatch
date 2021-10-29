@@ -28,8 +28,8 @@ class Function:
         self.package_path = "./apk/maoyanPro.apk"
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
-        self.date = "2021年10月29日"
-        self.goal_date = "2021年11月5日"
+        self.date = "2021年11月15日"
+        self.goal_date = "2021年11月16日"
 
     def launch_maoyanPro(self):
         self.device.start_app(self.package_name)
@@ -145,6 +145,7 @@ class Function:
                     data_temp_item.append(tv_count)
                 if tv_name == "其它":
                     print("数据获取完成")
+                    data_temp.append(data_temp_item)
                     return
             except Exception as ex:
                 print("Maybe need check this error:\n{}".format(str(ex)))
@@ -216,12 +217,12 @@ if __name__ == '__main__':
     function = Function(device, poco)
 
     common = Common(device, poco)
-    common.install_apk(function.package_path)
-    common.grantPermission(function.package_name)
-
-    function.launch_maoyanPro()
-    function.skip_guide()
-    function.enter_function()
+    # common.install_apk(function.package_path)
+    # common.grantPermission(function.package_name)
+    #
+    # function.launch_maoyanPro()
+    # function.skip_guide()
+    # function.enter_function()
     function.catchDataProcess()
 
     # filename = "./result/MovieDataFrom{}To{}.xlsx".format(function.date, function.goal_date)
