@@ -21,7 +21,7 @@ class Common:
 
     def __init__(self, device, poco):
         """
-        Common init function
+        Common init method
         :param device:deliver a device reference into init method
         :param poco:deliver a poco reference into init method
         """
@@ -55,7 +55,7 @@ class Common:
                 print("current app:{} has permission:[{}]".format(package_name, permission_list))
                 if permission_list:
                     for permission in permission_list:
-                        # grant each permission
+                        # grant each permission for current package
                         self.device.shell("pm grant {} {}".format(package_name, permission))
                         print("Now, grant app {} - permission {}".format(package_name, permission))
             except AdbShellError as ex:
@@ -63,11 +63,22 @@ class Common:
                 print(str(ex))
 
     def scroll_up_down(self, percent=0.6, duration=1):
+        """
+        scroll screen up and down
+        :param percent: control the scroll distance and direction
+        :param duration:control the scroll time
+        :return:
+        """
         print("Beign scroll……")
         self.poco.scroll(direction="vertical", percent=percent, duration=duration)
         sleep(1)
 
     def create_excel(self, filename):
+        """
+        create excel by absolute file path and name
+        :param filename:deliver a filename for create
+        :return: no return
+        """
         if not os.path.exists("./result"):
             os.mkdir("./result")
             print("Create folder success")
@@ -77,6 +88,13 @@ class Common:
         print("{} file create success!".format(filename))
 
     def write_into_excel(self, current_page_date, data, filename):
+        """
+        this method use to append data into a exists excel file
+        :param current_page_date:deliver current page date for data generate
+        :param data:deliver current page date to append
+        :param filename:the excel file you create by create_excel method
+        :return:
+        """
         df = pd.read_excel(filename, header=None, engine="openpyxl")
         print(data)
         # [['当天无排片，已跳过']]
@@ -88,6 +106,7 @@ class Common:
             list_temp = []
             print(len(b))
             list_temp.append(current_page_date)
+            # catching data from app all in one list,three data is a movie's data, cycle it to extract each movie's data
             for n in range(n, n + 3):
                 list_temp.append(b[n])
             n += 1
