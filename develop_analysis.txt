@@ -35,4 +35,23 @@
 
 # 如果出现children计数异常，重启设备再进行测试，否则容易导致测试时间很长
 
+五、程序运行注意点：
+1、建议使用Pycharm将脚本创建为一个新的Project，通过pip3 install -r requirement.txt进行批量安装所需的库
+2、开始抓取数据：
+    a、usb连接手机（设备）和电脑
+    b、手机（设备）打开usb debugging权限并电脑授权
+    c、打开function.py：修改三处# need modified 标注的点，分别是：
+        # 数据抓取开始日期
+        # need modified
+        self.date = "2020年10月3日"
+        # 数据抓取结束日期
+        # need modified
+        self.goal_date = "2021年10月3日"
+        # 连接设备序列号（在命令行adb device运行获得）
+        device = connect_device("Android:///{}".format("7c2440fd"))
+    d、打开function.py文件：右键Run function
+    e、等待手机安装好软件后会有pocoservice弹出，需要人工点击确认（airtest poco对不同设备可以兼容性不同，有些需要这样操作下）
+    f、程序运行后，会自动安装猫眼Pro app并且打开授权和跳过引导页进入排片上座界面并进入日期选择页面，这时手动选择step c中设置的数据抓取日期
+    g、step f当手动选择完成正确的开始日期后，程序会自动向下运行直到抓取完全到数据结束日期，每天的数据都会自动拼接写入到excel中，数据不会缺失
+
 
