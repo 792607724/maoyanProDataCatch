@@ -28,8 +28,8 @@ class Function:
         self.package_path = "./apk/maoyanPro.apk"
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
-        self.date = "2021年12月1日"
-        self.goal_date = "2022年12月2日"
+        self.date = "2020年12月1日"
+        self.goal_date = "2021年12月2日"
 
     def launch_maoyanPro(self):
         self.device.start_app(self.package_name)
@@ -187,14 +187,6 @@ class Function:
             while not finished:
                 # 无排片数据时进入下一天
                 sleep(2)
-                # no_video_today = self.poco(text="暂无排片数据")
-                # if self.poco(text="暂无排片数据").wait().exists():
-                #     print("暂无排片数据，当前页面开始跳过！")
-                #     self.generateDataToExcel(self.get_current_date(), [["当天无排片", "已跳过", "当天无排片"]], filename)
-                #     next_day.invalidate()
-                #     next_day.click()
-                # else:
-                #     print("当天存在数据！")
                 while self.poco(text="暂无排片数据").wait().exists():
                     print("暂无排片数据，当前页面开始跳过！")
                     self.generateDataToExcel(self.get_current_date(), [["当天无排片", "已跳过", "当天无排片"]], filename)
