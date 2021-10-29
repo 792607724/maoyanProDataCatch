@@ -198,9 +198,7 @@ class Function:
 
                 # 获取当前页面(当天)数据
                 current_page_date = self.get_current_date()
-                print("A")
                 self.generateDataToExcel(current_page_date, function.catch_data(), filename)
-                print("B")
                 while True:
                     try:
                         next_day.invalidate()
