@@ -177,7 +177,7 @@ class Function:
         data_temp.append(data_temp_item)
 
     def catchDataProcess(self):
-        next_day = poco(text="后一天").wait()
+        next_day = poco("com.sankuai.moviepro:id/tv_next").wait()
         if function.wait_to_goal_date():
             print("Begin")
             finished = False
@@ -186,10 +186,10 @@ class Function:
             common.create_excel(filename)
             while not finished:
                 # 无排片数据时进入下一天
-                sleep(2)
                 while self.poco(text="暂无排片数据").wait().exists():
                     print("暂无排片数据，当前页面开始跳过！")
                     self.generateDataToExcel(self.get_current_date(), [["当天无排片", "已跳过", "当天无排片"]], filename)
+                    sleep(2)
                     next_day.invalidate()
                     next_day.click()
                     if self.get_current_date() == self.goal_date:
@@ -206,6 +206,7 @@ class Function:
                             if function.get_current_date() == function.goal_date:
                                 finished = True
                                 break
+                            next_day.invalidate()
                             next_day.click()
                             break
                         else:
