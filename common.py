@@ -60,6 +60,7 @@ class Common:
     def write_into_excel(self, current_page_date, data, filename):
         df = pd.read_excel(filename, header=None, engine="openpyxl")
         print(data)
+        # [['当天无排片，已跳过']]
         b = data[0]
         # 按这个格式处理数据并传入，每天的都追加进去
         n = 0

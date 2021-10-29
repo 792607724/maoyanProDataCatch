@@ -28,8 +28,8 @@ class Function:
         self.package_path = "./apk/maoyanPro.apk"
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
-        self.date = "2021年11月15日"
-        self.goal_date = "2021年11月16日"
+        self.date = "2021年11月20日"
+        self.goal_date = "2022年11月25日"
 
     def launch_maoyanPro(self):
         self.device.start_app(self.package_name)
@@ -185,6 +185,13 @@ class Function:
             filename = "./result/MovieDataFrom{}To{}.xlsx".format(self.date, self.goal_date)
             common.create_excel(filename)
             while not finished:
+                # 无排片数据时进入下一天
+                no_video_today = self.poco(text="暂无排片数据")
+                print("暂无排片数据，当前页面开始跳过！")
+                if no_video_today.wait().exists():
+                    self.generateDataToExcel(self.get_current_date(), [["当天无排片","已跳过", "当天无排片"]], filename)
+                    next_day.invalidate()
+                    next_day.click()
                 # 获取当前页面(当天)数据
                 current_page_date = self.get_current_date()
                 self.generateDataToExcel(current_page_date, function.catch_data(), filename)
@@ -220,10 +227,7 @@ if __name__ == '__main__':
     # common.install_apk(function.package_path)
     # common.grantPermission(function.package_name)
     #
-    # function.launch_maoyanPro()
-    # function.skip_guide()
-    # function.enter_function()
+    function.launch_maoyanPro()
+    function.skip_guide()
+    function.enter_function()
     function.catchDataProcess()
-
-    # filename = "./result/MovieDataFrom{}To{}.xlsx".format(function.date, function.goal_date)
-    # common.create_excel(filename=filename)
