@@ -28,8 +28,8 @@ class Function:
         self.package_path = "./apk/maoyanPro.apk"
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
-        self.date = "2021年10月30日"
-        self.goal_date = "2021年10月31日"
+        self.date = "2020年10月3日"
+        self.goal_date = "2021年10月3日"
 
     def launch_maoyanPro(self):
         self.device.start_app(self.package_name)
@@ -211,8 +211,10 @@ class Function:
                             break
                         else:
                             common.scroll_up_down(percent=-0.6)
+                            sleep(3)
                     except Exception:
                         common.scroll_up_down(percent=-0.6)
+                        sleep(3)
 
     # 测一天写一天
     def generateDataToExcel(self, current_page_date, data, filename):
