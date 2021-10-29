@@ -28,8 +28,8 @@ class Function:
         self.package_path = "./apk/maoyanPro.apk"
         self.guide_name = "同意并继续"
         self.function_name = "排片上座"
-        self.date = "2021年10月28日"
-        self.goal_date = "2021年10月29日"
+        self.date = "2021年10月29日"
+        self.goal_date = "2021年10月30日"
 
     def launch_maoyanPro(self):
         self.device.start_app(self.package_name)
@@ -222,7 +222,7 @@ if __name__ == '__main__':
     # function.launch_maoyanPro()
     # function.skip_guide()
     # function.enter_function()
-    function.catchDataProcess()
-    # filename = "./result/MovieDataFrom{}To{}.xlsx".format(function.date, function.goal_date)
-    # common.create_excel(filename)
-    # common.write_into_excel("OK", filename)
+    # function.catchDataProcess()
+
+    filename = "./result/MovieDataFrom{}To{}.xlsx".format(function.date, function.goal_date)
+    common.create_excel(filename=filename)
