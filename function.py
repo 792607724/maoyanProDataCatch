@@ -367,6 +367,8 @@ if __name__ == '__main__':
                 "Current date is {}, and Main Process happened exception, please check it:\n{}".format(current_date,
                                                                                                        str(ex)))
             error_log.close()
+        PocoServicePackage = 'com.netease.open.pocoservice'
+        os.system("am start -n {}/.TestActivity".format(PocoServicePackage))
     finally:
         # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
         del device, poco, function, common
