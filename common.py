@@ -8,6 +8,7 @@ import pandas as pd
 from airtest.core.error import AdbShellError
 
 os.path.abspath(".")
+import gc
 cur_time = time.strftime("%Y%m%d_%H%M%S")
 
 """
@@ -61,6 +62,10 @@ class Common:
             except AdbShellError as ex:
                 print("No need granted for this permission!")
                 print(str(ex))
+            finally:
+                # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+                del permission_list
+                gc.collect()
 
     def scroll_up_down(self, percent=0.6, duration=1):
         """
@@ -115,4 +120,7 @@ class Common:
         ds = pd.DataFrame(temp_list)
         df = df.append(ds, ignore_index=True)
         df.to_excel(filename, index=False, header=False)
+        # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+        del temp_list
+        gc.collect()
         print(str(data) + "\n")

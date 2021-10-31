@@ -1,4 +1,5 @@
 # coding = utf8
+import gc
 import logging
 import os
 
@@ -58,6 +59,8 @@ class Function:
         """
         try:
             self.poco(text=self.guide_name).wait().click()
+            # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+            sleep(0.5)
         except Exception as ex:
             print("No need skip guide: exception\n {}".format(str(ex)))
 
@@ -68,6 +71,8 @@ class Function:
         """
         try:
             self.poco(text=self.function_name).wait().click()
+            # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+            sleep(0.5)
         except Exception as ex:
             print("No need do this, check your code exception\n {}".format(str(ex)))
 
@@ -97,6 +102,9 @@ class Function:
                     print("Waiting…… now please scroll to find specific date……")
                     if choose_date == self.date:
                         print("Date choose correct, start catch data")
+                        # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+                        del choose_date
+                        gc.collect()
                         return True
                     sleep(1)
                 except Exception:
@@ -120,6 +128,10 @@ class Function:
         save data when scroll to save each days data and return to deal with
         :return:return current page data
         """
+        # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+        del data_temp, data_temp_item
+        gc.collect()
+
         global data_temp, data_temp_item
         data_temp = []
         data_temp_item = []
@@ -143,8 +155,6 @@ class Function:
         scroll_head = self.poco(text="片名").wait()
         scroll_tail = self.poco(text="影视作品《免责说明》").wait()
         ll_root = self.poco("com.sankuai.moviepro:id/ll_root").wait()
-        root_recycle = self.poco("com.sankuai.moviepro:id/root_recycle").wait()
-        next_day = self.poco(text="后一天").wait()
 
         if scroll_head.exists():
             try:
@@ -192,10 +202,16 @@ class Function:
                     print("数据获取完成")
                     data_temp.append(data_temp_item)
                     return
+                # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+                del tv_name, tv_rate, tv_count
+                gc.collect()
             except Exception as ex:
                 print("Maybe need check this error:\n{}".format(str(ex)))
                 continue
         data_temp.append(data_temp_item)
+        # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+        del children_number
+        gc.collect()
 
     # situation 2
     def get_data_situation_2(self):
@@ -220,10 +236,16 @@ class Function:
                 if tv_name == "其它":
                     print("数据获取完成")
                     return
+                # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+                del tv_name, tv_rate, tv_count
+                gc.collect()
             except Exception as ex:
                 print("Maybe need check this error:\n{}".format(str(ex)))
                 continue
         data_temp.append(data_temp_item)
+        # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+        del children_number
+        gc.collect()
 
     def catchDataProcess(self):
         """
@@ -254,6 +276,9 @@ class Function:
                     next_day.click()
                     if self.get_current_date() == self.goal_date:
                         print("数据获取已结束！")
+                        # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+                        del next_day
+                        gc.collect()
                         return
 
                 # 获取当前页面(当天)数据
@@ -267,6 +292,9 @@ class Function:
                             # if current date is the goal date, break cycle, program done
                             if function.get_current_date() == function.goal_date:
                                 finished = True
+                                # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+                                del next_day, current_page_date
+                                gc.collect()
                                 break
                             next_day.invalidate()
                             next_day.click()
@@ -300,24 +328,49 @@ if __name__ == '__main__':
     3、function:init Function class and deliver device、poco into it
     4、common:init Common class and deliver device、poco into it
     """
-    print("Running test……")
+    try:
+        print(
+            "==================================================Main Process "
+            "Run==================================================")
 
-    # need modified
-    device = connect_device("Android:///{}".format("7c2440fd"))
-    poco = AndroidUiautomationPoco(device=device, use_airtest_input=False, screenshot_each_action=False)
+        # need modified
+        device = connect_device("Android:///{}".format("7c2440fd"))
+        poco = AndroidUiautomationPoco(device=device, use_airtest_input=False, screenshot_each_action=False)
 
-    function = Function(device, poco)
+        function = Function(device, poco)
 
-    common = Common(device, poco)
-    # install maoyanPro apk
-    common.install_apk(function.package_path)
-    # grant all permission for maoyanPro app
-    common.grantPermission(function.package_name)
-    # launch maoyanPro
-    function.launch_maoyanPro()
-    # skip maoyanPro's first skip guide
-    function.skip_guide()
-    # enter maoyanPro's main function:排片上座
-    function.enter_function()
-    # Beign catch data process to extract data by automatically UI work flow
-    function.catchDataProcess()
+        common = Common(device, poco)
+        # install maoyanPro apk
+        common.install_apk(function.package_path)
+        # grant all permission for maoyanPro app
+        common.grantPermission(function.package_name)
+        # launch maoyanPro
+        function.launch_maoyanPro()
+        # skip maoyanPro's first skip guide
+        function.skip_guide()
+        # enter maoyanPro's main function:排片上座
+        function.enter_function()
+        # Beign catch data process to extract data by automatically UI work flow
+        function.catchDataProcess()
+    except Exception as ex:
+        # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+        print("Main Process happened exception, please check it:\n{}".format(str(ex)))
+        common.scroll_up_down(percent=-0.6)
+        common.scroll_up_down(percent=-0.6)
+        current_date = function.get_current_date()
+        print("Current date is:{}".format(current_date))
+        if not os.path.exists("./Error"):
+            os.mkdir("./Error")
+            print("Create folder success")
+        with open("./Error/{}.log".format(current_date), "w") as error_log:
+            error_log.writelines(
+                "Current date is {}, and Main Process happened exception, please check it:\n{}".format(current_date,
+                                                                                                       str(ex)))
+            error_log.close()
+    finally:
+        # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
+        del device, poco, function, common
+        gc.collect()
+        print(
+            "==================================================Main Process "
+            "Done==================================================")
