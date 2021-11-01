@@ -2,6 +2,8 @@
 import gc
 import logging
 import os
+import sys
+import traceback
 
 from common import Common
 
@@ -63,6 +65,8 @@ class Function:
             sleep(0.5)
         except Exception as ex:
             print("No need skip guide: exception\n {}".format(str(ex)))
+            exc_type, exc_value, exc_obj = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
 
     def enter_function(self):
         """
@@ -75,6 +79,8 @@ class Function:
             sleep(0.5)
         except Exception as ex:
             print("No need do this, check your code exception\n {}".format(str(ex)))
+            exc_type, exc_value, exc_obj = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
 
     def get_current_date(self):
         """
@@ -88,6 +94,8 @@ class Function:
             return current_date
         except Exception as ex:
             print("No need do this, check your code exception\n {}".format(str(ex)))
+            exc_type, exc_value, exc_obj = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
 
     def wait_to_goal_date(self):
         """
@@ -110,9 +118,13 @@ class Function:
                         return True
                     sleep(1)
                 except Exception:
+                    exc_type, exc_value, exc_obj = sys.exc_info()
+                    traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
                     continue
         except Exception as ex:
             print("No need do this, check your code exception\n {}".format(str(ex)))
+            exc_type, exc_value, exc_obj = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
 
     def catch_data(self):
         """
@@ -124,6 +136,8 @@ class Function:
             return current_day_data
         except Exception as ex:
             print("No need do this, check your code exception\n {}".format(str(ex)))
+            exc_type, exc_value, exc_obj = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
 
     def save_data_when_scroll(self):
         """
@@ -175,6 +189,8 @@ class Function:
                     print("已到底部，当天数据获取完毕")
             except Exception as ex:
                 print("No need do this, check your code exception\n {}".format(str(ex)))
+                exc_type, exc_value, exc_obj = sys.exc_info()
+                traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
         return data_temp
 
     # situation 1
@@ -206,6 +222,8 @@ class Function:
                 gc.collect()
             except Exception as ex:
                 print("Maybe need check this error:\n{}".format(str(ex)))
+                exc_type, exc_value, exc_obj = sys.exc_info()
+                traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
                 continue
         data_temp.append(data_temp_item)
         # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
@@ -240,6 +258,8 @@ class Function:
                 gc.collect()
             except Exception as ex:
                 print("Maybe need check this error:\n{}".format(str(ex)))
+                exc_type, exc_value, exc_obj = sys.exc_info()
+                traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
                 continue
         data_temp.append(data_temp_item)
         # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
@@ -305,6 +325,8 @@ class Function:
                     except Exception:
                         common.scroll_up_down(percent=-0.6)
                         sleep(3)
+                        exc_type, exc_value, exc_obj = sys.exc_info()
+                        traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
 
     # 测一天写一天
     def generateDataToExcel(self, current_page_date, data, filename):
@@ -369,6 +391,8 @@ if __name__ == '__main__':
             error_log.close()
         PocoServicePackage = 'com.netease.open.pocoservice'
         os.system("am start -n {}/.TestActivity".format(PocoServicePackage))
+        exc_type, exc_value, exc_obj = sys.exc_info()
+        traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
     finally:
         # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
         del device, poco, function, common
