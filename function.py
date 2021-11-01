@@ -40,10 +40,10 @@ class Function:
         self.function_name = "排片上座"
         # your date from
         # need modified
-        self.date = "2020年10月3日"
+        self.date = "2019年11月21日"
         # your date to
         # need modified
-        self.goal_date = "2021年10月3日"
+        self.goal_date = "2019年11月23日"
 
     def launch_maoyanPro(self):
         """
@@ -128,9 +128,6 @@ class Function:
         save data when scroll to save each days data and return to deal with
         :return:return current page data
         """
-        # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
-        del data_temp, data_temp_item
-        gc.collect()
 
         global data_temp, data_temp_item
         data_temp = []
