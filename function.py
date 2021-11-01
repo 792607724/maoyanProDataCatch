@@ -40,10 +40,10 @@ class Function:
         self.function_name = "排片上座"
         # your date from
         # need modified
-        self.date = "2019年11月21日"
+        self.date = "2018年4月21日"
         # your date to
         # need modified
-        self.goal_date = "2019年11月23日"
+        self.goal_date = "2021年11月1日"
 
     def launch_maoyanPro(self):
         """
@@ -83,6 +83,7 @@ class Function:
         """
         try:
             current_date = self.poco("com.sankuai.moviepro:id/tv_date").wait().get_text()
+            sleep(0.5)
             print(current_date)
             return current_date
         except Exception as ex:
@@ -95,6 +96,7 @@ class Function:
         """
         try:
             self.poco("com.sankuai.moviepro:id/tv_date").wait().click()
+            sleep(0.5)
             print("Please choose your date by manually:\n{}".format(self.date))
             while True:
                 try:
@@ -354,6 +356,7 @@ if __name__ == '__main__':
         print("Main Process happened exception, please check it:\n{}".format(str(ex)))
         common.scroll_up_down(percent=-0.6)
         common.scroll_up_down(percent=-0.6)
+        sleep(3)
         current_date = function.get_current_date()
         print("Current date is:{}".format(current_date))
         if not os.path.exists("./Error"):
