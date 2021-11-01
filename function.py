@@ -390,7 +390,7 @@ if __name__ == '__main__':
                                                                                                        str(ex)))
             error_log.close()
         PocoServicePackage = 'com.netease.open.pocoservice'
-        os.system("am start -n {}/.TestActivity".format(PocoServicePackage))
+        os.system("adb shell am start -n {}/.TestActivity".format(PocoServicePackage))
         exc_type, exc_value, exc_obj = sys.exc_info()
         traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
     finally:
