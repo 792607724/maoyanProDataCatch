@@ -9,6 +9,7 @@ from airtest.core.error import AdbShellError
 
 os.path.abspath(".")
 import gc
+
 cur_time = time.strftime("%Y%m%d_%H%M%S")
 
 """
