@@ -62,10 +62,6 @@ class Common:
             except AdbShellError as ex:
                 print("No need granted for this permission!")
                 print(str(ex))
-            finally:
-                # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
-                del permission_list
-                gc.collect()
 
     def scroll_up_down(self, percent=0.6, duration=1):
         """
