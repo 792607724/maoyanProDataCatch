@@ -303,6 +303,7 @@ class Function:
                 # 获取当前页面(当天)数据
                 current_page_date = self.get_current_date()
                 # deliver current time、data、excel file name to append data file in excel
+                sleep(2)
                 self.generateDataToExcel(current_page_date, function.catch_data(), filename)
                 while True:
                     try:
