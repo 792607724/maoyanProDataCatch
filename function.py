@@ -284,6 +284,10 @@ class Function:
             common.create_excel(filename)
             # into the data catching cycle
             while not finished:
+                # # 显示网络连接问题时，点击下page即可刷新继续测试
+                # if self.poco("")
+                # Need to Do
+
                 # 无排片数据时进入下一天
                 # compatible the situation when some page has no data will filled with [["当天无排片", "已跳过", "当天无排片"]]
                 while self.poco(text="暂无排片数据").wait().exists():
