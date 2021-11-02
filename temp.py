@@ -1,8 +1,6 @@
 # coding = utf8
 import os
 
-from rich import print
-
 os.path.abspath(".")
 """
     @File:temp.py

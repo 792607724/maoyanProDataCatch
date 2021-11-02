@@ -42,7 +42,7 @@ class Function:
         self.function_name = "排片上座"
         # your date from
         # need modified
-        self.date = "2019年12月5日"
+        self.date = "2020年3月9日"
         # your date to
         # need modified
         self.goal_date = "2021年11月2日"
@@ -174,11 +174,13 @@ class Function:
                 while not scroll_tail.exists():
                     # situation 1
                     if scroll_head.exists() and ll_root.exists():
+                        self.network_reset_operate()
                         # 获取数据
                         self.get_data_situation_1()
                         common.scroll_up_down(percent=0.6, duration=1)
                     # situation 2
                     elif (not scroll_head.exists()) and ll_root.exists():
+                        self.network_reset_operate()
                         # 获取数据
                         self.get_data_situation_2()
                         common.scroll_up_down(percent=0.6, duration=1)
@@ -192,6 +194,15 @@ class Function:
                 exc_type, exc_value, exc_obj = sys.exc_info()
                 traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
         return data_temp
+
+    def network_reset_operate(self):
+        # # 显示网络连接问题时，点击下page即可刷新继续测试
+        no_network_refresh = self.poco("数据获取失败，请检查网络后刷新")
+        while no_network_refresh.wait().exists():
+            no_network_refresh.click()
+            no_network_refresh.invalidate()
+            print("Refresh page, current network error, please check your network!")
+            sleep(1)
 
     # situation 1
     def get_data_situation_1(self):
@@ -365,6 +376,7 @@ if __name__ == '__main__':
 
         # need modified
         device = connect_device("Android:///{}".format("7c2440fd"))
+        # device = connect_device("Android:///{}".format("AB717YDC01100118"))
         poco = AndroidUiautomationPoco(device=device, use_airtest_input=False, screenshot_each_action=False)
 
         function = Function(device, poco)
