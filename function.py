@@ -285,8 +285,12 @@ class Function:
             # into the data catching cycle
             while not finished:
                 # # 显示网络连接问题时，点击下page即可刷新继续测试
-                # if self.poco("")
-                # Need to Do
+                no_network_refresh = self.poco("数据获取失败，请检查网络后刷新")
+                while no_network_refresh.wait().exists():
+                    no_network_refresh.click()
+                    no_network_refresh.invalidate()
+                    print("Refresh page, current network error, please check your network!")
+                    sleep(1)
 
                 # 无排片数据时进入下一天
                 # compatible the situation when some page has no data will filled with [["当天无排片", "已跳过", "当天无排片"]]
