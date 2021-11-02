@@ -174,18 +174,22 @@ class Function:
                 while not scroll_tail.exists():
                     # situation 1
                     if scroll_head.exists() and ll_root.exists():
+                        # 判断当前网络OK
                         self.network_reset_operate()
                         # 获取数据
                         self.get_data_situation_1()
                         common.scroll_up_down(percent=0.6, duration=1)
                     # situation 2
                     elif (not scroll_head.exists()) and ll_root.exists():
+                        # 判断当前网络OK
                         self.network_reset_operate()
                         # 获取数据
                         self.get_data_situation_2()
                         common.scroll_up_down(percent=0.6, duration=1)
                 # situation 2
                 if scroll_tail.exists():
+                    # 判断当前网络OK
+                    self.network_reset_operate()
                     # 获取数据
                     self.get_data_situation_1()
                     print("已到底部，当天数据获取完毕")
