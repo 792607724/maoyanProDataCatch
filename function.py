@@ -206,7 +206,7 @@ class Function:
             no_network_refresh.click()
             no_network_refresh.invalidate()
             print("Refresh page, current network error, please check your network!")
-            sleep(1)
+            sleep(3)
 
     # situation 1
     def get_data_situation_1(self):
