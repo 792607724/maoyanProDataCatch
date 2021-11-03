@@ -384,19 +384,18 @@ if __name__ == '__main__':
         function = Function(device, poco)
 
         common = Common(device, poco)
-        function.network_reset_operate()
-        # # install maoyanPro apk
-        # common.install_apk(function.package_path)
-        # # grant all permission for maoyanPro app
-        # common.grantPermission(function.package_name)
-        # # launch maoyanPro
-        # function.launch_maoyanPro()
-        # # skip maoyanPro's first skip guide
-        # function.skip_guide()
-        # # enter maoyanPro's main function:排片上座
-        # function.enter_function()
-        # # Beign catch data process to extract data by automatically UI work flow
-        # function.catchDataProcess()
+        # install maoyanPro apk
+        common.install_apk(function.package_path)
+        # grant all permission for maoyanPro app
+        common.grantPermission(function.package_name)
+        # launch maoyanPro
+        function.launch_maoyanPro()
+        # skip maoyanPro's first skip guide
+        function.skip_guide()
+        # enter maoyanPro's main function:排片上座
+        function.enter_function()
+        # Beign catch data process to extract data by automatically UI work flow
+        function.catchDataProcess()
     except Exception as ex:
         # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
         print("Main Process happened exception, please check it:\n{}".format(str(ex)))
