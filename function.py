@@ -201,7 +201,7 @@ class Function:
 
     def network_reset_operate(self):
         # # 显示网络连接问题时，点击下page即可刷新继续测试
-        no_network_refresh = self.poco("数据获取失败，请检查网络后刷新")
+        no_network_refresh = self.poco(text="数据获取失败，请检查网络后刷新")
         while no_network_refresh.wait().exists():
             no_network_refresh.click()
             no_network_refresh.invalidate()
@@ -290,6 +290,7 @@ class Function:
         next_day = poco("com.sankuai.moviepro:id/tv_next").wait()
         # judge current page is the self.date to start from
         if function.wait_to_goal_date():
+            self.network_reset_operate()
             print("Begin")
             # a mark for the cycle up to self.goal_date
             finished = False
@@ -338,13 +339,13 @@ class Function:
                             next_day.click()
                             break
                         else:
-                            # scroll up use -0.4, sleep 3s will make sure the screen stable after the refresh when scroll
+                            # scroll up use -0.6, sleep 3s will make sure the screen stable after the refresh when scroll
                             self.network_reset_operate()
-                            common.scroll_up_down(percent=-0.4, duration=1)
+                            common.scroll_up_down(percent=-0.6, duration=1)
                             sleep(3)
                     except Exception:
                         self.network_reset_operate()
-                        common.scroll_up_down(percent=-0.4, duration=1)
+                        common.scroll_up_down(percent=-0.6, duration=1)
                         sleep(3)
                         exc_type, exc_value, exc_obj = sys.exc_info()
                         traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
@@ -376,31 +377,32 @@ if __name__ == '__main__':
             "Run==================================================")
 
         # need modified
-        device = connect_device("Android:///{}".format("7c2440fd"))
-        # device = connect_device("Android:///{}".format("AB717YDC01100118"))
+        # device = connect_device("Android:///{}".format("7c2440fd"))
+        device = connect_device("Android:///{}".format("AB717YDC01100018"))
         poco = AndroidUiautomationPoco(device=device, use_airtest_input=False, screenshot_each_action=False)
 
         function = Function(device, poco)
 
         common = Common(device, poco)
-        # install maoyanPro apk
-        common.install_apk(function.package_path)
-        # grant all permission for maoyanPro app
-        common.grantPermission(function.package_name)
-        # launch maoyanPro
-        function.launch_maoyanPro()
-        # skip maoyanPro's first skip guide
-        function.skip_guide()
-        # enter maoyanPro's main function:排片上座
-        function.enter_function()
-        # Beign catch data process to extract data by automatically UI work flow
-        function.catchDataProcess()
+        function.network_reset_operate()
+        # # install maoyanPro apk
+        # common.install_apk(function.package_path)
+        # # grant all permission for maoyanPro app
+        # common.grantPermission(function.package_name)
+        # # launch maoyanPro
+        # function.launch_maoyanPro()
+        # # skip maoyanPro's first skip guide
+        # function.skip_guide()
+        # # enter maoyanPro's main function:排片上座
+        # function.enter_function()
+        # # Beign catch data process to extract data by automatically UI work flow
+        # function.catchDataProcess()
     except Exception as ex:
         # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
         print("Main Process happened exception, please check it:\n{}".format(str(ex)))
         function.network_reset_operate()
-        common.scroll_up_down(percent=-0.4, duration=1)
-        common.scroll_up_down(percent=-0.4, duration=1)
+        common.scroll_up_down(percent=-0.6, duration=1)
+        common.scroll_up_down(percent=-0.6, duration=1)
         sleep(3)
         current_date = function.get_current_date()
         print("Current date is:{}".format(current_date))
