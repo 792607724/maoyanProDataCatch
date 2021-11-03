@@ -42,10 +42,10 @@ class Function:
         self.function_name = "排片上座"
         # your date from
         # need modified
-        self.date = "2020年3月9日"
+        self.date = "2020年12月14日"
         # your date to
         # need modified
-        self.goal_date = "2021年11月2日"
+        self.goal_date = "2021年11月3日"
 
     def launch_maoyanPro(self):
         """
@@ -174,17 +174,17 @@ class Function:
                 while not scroll_tail.exists():
                     # situation 1
                     if scroll_head.exists() and ll_root.exists():
-                        # 判断当前网络OK
-                        self.network_reset_operate()
                         # 获取数据
                         self.get_data_situation_1()
+                        # 判断当前网络OK
+                        self.network_reset_operate()
                         common.scroll_up_down(percent=0.6, duration=1)
                     # situation 2
                     elif (not scroll_head.exists()) and ll_root.exists():
-                        # 判断当前网络OK
-                        self.network_reset_operate()
                         # 获取数据
                         self.get_data_situation_2()
+                        # 判断当前网络OK
+                        self.network_reset_operate()
                         common.scroll_up_down(percent=0.6, duration=1)
                 # situation 2
                 if scroll_tail.exists():
@@ -339,9 +339,11 @@ class Function:
                             break
                         else:
                             # scroll up use -0.6, sleep 3s will make sure the screen stable after the refresh when scroll
+                            self.network_reset_operate()
                             common.scroll_up_down(percent=-0.6)
                             sleep(3)
                     except Exception:
+                        self.network_reset_operate()
                         common.scroll_up_down(percent=-0.6)
                         sleep(3)
                         exc_type, exc_value, exc_obj = sys.exc_info()
@@ -396,6 +398,7 @@ if __name__ == '__main__':
     except Exception as ex:
         # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
         print("Main Process happened exception, please check it:\n{}".format(str(ex)))
+        function.network_reset_operate()
         common.scroll_up_down(percent=-0.6)
         common.scroll_up_down(percent=-0.6)
         sleep(3)
