@@ -377,8 +377,8 @@ if __name__ == '__main__':
             "Run==================================================")
 
         # need modified
-        # device = connect_device("Android:///{}".format("7c2440fd"))
-        device = connect_device("Android:///{}".format("AB717YDC01100018"))
+        device = connect_device("Android:///{}".format("7c2440fd"))
+        # device = connect_device("Android:///{}".format("AB717YDC01100018"))
         poco = AndroidUiautomationPoco(device=device, use_airtest_input=False, screenshot_each_action=False)
 
         function = Function(device, poco)
