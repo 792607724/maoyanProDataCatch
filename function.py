@@ -338,13 +338,13 @@ class Function:
                             next_day.click()
                             break
                         else:
-                            # scroll up use -0.6, sleep 3s will make sure the screen stable after the refresh when scroll
+                            # scroll up use -0.4, sleep 3s will make sure the screen stable after the refresh when scroll
                             self.network_reset_operate()
-                            common.scroll_up_down(percent=-0.6)
+                            common.scroll_up_down(percent=-0.4, duration=1)
                             sleep(3)
                     except Exception:
                         self.network_reset_operate()
-                        common.scroll_up_down(percent=-0.6)
+                        common.scroll_up_down(percent=-0.4, duration=1)
                         sleep(3)
                         exc_type, exc_value, exc_obj = sys.exc_info()
                         traceback.print_exception(exc_type, exc_value, exc_obj, limit=2, file=sys.stdout)
@@ -399,8 +399,8 @@ if __name__ == '__main__':
         # 尝试滞空，是否能修复内存泄漏问题 -- Guangtao
         print("Main Process happened exception, please check it:\n{}".format(str(ex)))
         function.network_reset_operate()
-        common.scroll_up_down(percent=-0.6)
-        common.scroll_up_down(percent=-0.6)
+        common.scroll_up_down(percent=-0.4, duration=1)
+        common.scroll_up_down(percent=-0.4, duration=1)
         sleep(3)
         current_date = function.get_current_date()
         print("Current date is:{}".format(current_date))
