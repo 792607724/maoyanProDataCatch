@@ -36,7 +36,7 @@
 
 # 如果一直弹出still waiting for uiautomation ready.，不用退出程序，到桌面点一下pocoservice，再回到之前界面即可继续（部分机器兼容性可能会有该问题）
 
-五、程序运行注意点：
+五、程序运行注意点（运行操作步骤）：
 1、建议使用Pycharm将脚本创建为一个新的Project，通过pip3 install -r requirement.txt进行批量安装所需的库
 2、开始抓取数据：
     a、usb连接手机（设备）和电脑
