@@ -42,10 +42,10 @@ class Function:
         self.function_name = "排片上座"
         # your date from
         # need modified
-        self.date = "2018年4月21日"
+        self.date = "2015年4月1日"
         # your date to
         # need modified
-        self.goal_date = "2021年11月4日"
+        self.goal_date = "2021年11月5日"
 
     def launch_maoyanPro(self):
         """
