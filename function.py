@@ -380,7 +380,7 @@ if __name__ == '__main__':
         # device = connect_device("Android:///{}".format("7c2440fd"))
         device = connect_device("Android:///{}".format("127.0.0.1:7555"))
         poco = AndroidUiautomationPoco(device=device, use_airtest_input=False, screenshot_each_action=False)
-
+        poco().exists()
         function = Function(device, poco)
 
         common = Common(device, poco)
