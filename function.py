@@ -45,7 +45,7 @@ class Function:
         self.date = "2015年4月1日"
         # your date to
         # need modified
-        self.goal_date = "2021年11月5日"
+        self.goal_date = "2021年11月12日"
 
     def launch_maoyanPro(self):
         """
