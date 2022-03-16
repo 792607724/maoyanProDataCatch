@@ -3,7 +3,7 @@ import os
 
 os.path.abspath(".")
 """
-    @File:temp.py
+    @File:seevision_pyqt5.py
     @Author:Bruce
     @Date:2021/10/29
 """
