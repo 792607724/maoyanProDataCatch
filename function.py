@@ -42,10 +42,11 @@ class Function:
         self.function_name = "排片上座"
         # your date from
         # need modified
-        self.date = "2021年11月19日"
+        # self.date = "2015年4月1日"
+        self.date = "2022年3月16日"
         # your date to
         # need modified
-        self.goal_date = "2021年11月21日"
+        self.goal_date = "2022年4月1日"
 
     def launch_maoyanPro(self):
         """
@@ -378,7 +379,7 @@ if __name__ == '__main__':
 
         # need modified
         # device = connect_device("Android:///{}".format("7c2440fd"))
-        device = connect_device("Android:///{}".format("127.0.0.1:7555"))
+        device = connect_device("Android:///{}".format("emulator-5554"))
         poco = AndroidUiautomationPoco(device=device, use_airtest_input=False, screenshot_each_action=False)
         poco().exists()
         function = Function(device, poco)
